@@ -10,7 +10,7 @@ import argparse
 def ping_aws(count=10, interval=0.2, timeout=1):
     url = 'http://www.cloudping.info/'
     html = requests.get(url).text
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(html, 'html.parser')
 
     table = soup.find('table')
     rows = table.find_all('td', class_='latency')
@@ -30,9 +30,8 @@ def ping_aws(count=10, interval=0.2, timeout=1):
         lines = output.split('\n')
         stats = lines[-2].split('=')[-1].split('ms')[0].strip().split('/')
         stats = map(float, stats)
-        stats = map(int, stats)
 
-        print('[{}] min:{}, avg:{}, max:{}, mdev:{}\n'.format(name, *stats))
+        print('[{}] min:{}, avg:{}, max:{}, mdev:{}'.format(name, *stats))
 
 
 if __name__ == '__main__':
